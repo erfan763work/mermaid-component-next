@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { AppProvider } from '@/app/provider';
-import './globals.css';
+import '../styles/globals.css';
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
