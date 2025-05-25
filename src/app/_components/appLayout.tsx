@@ -47,7 +47,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-[100%]">
         {/* Sidebar */}
         <Sidebar className="hidden md:block">
           <SidebarHeader className="p-4">
@@ -76,7 +76,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-6">{children}</main>
+        <main className="w-[100%] flex-1 p-6">{children}</main>
       </div>
     </SidebarProvider>
   );

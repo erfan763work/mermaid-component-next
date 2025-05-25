@@ -1,2 +1,2 @@
-export { default as MarkdownEditor } from './MarkdownEditor';
-export * from './MarkdownEditor';
+export { default as TextEditor } from './TextEditor';
+export * from './TextEditor';
