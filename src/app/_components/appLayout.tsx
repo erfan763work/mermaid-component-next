@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { Home, Text, AudioLines, Menu } from 'lucide-react';
+import { Home, Text, AudioLines, Menu, ChartBar } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -18,10 +18,11 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
+import { version } from '../../../package.json';
 
 const navItems = [
   { title: 'Home', href: '/', icon: Home },
-  { title: 'Diagrams', href: '/diagram', icon: Text },
+  { title: 'Diagrams', href: '/diagram', icon: ChartBar },
   { title: 'Text Editor', href: '/text-editor', icon: Text },
   { title: 'Voice Recorder', href: '/voice-recorder', icon: AudioLines },
 ];
@@ -61,7 +62,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter className="p-4">
-            <p className="text-sm text-muted-foreground">v1.0.0</p>
+            <p className="text-sm text-muted-foreground">v{version}</p>
           </SidebarFooter>
         </Sidebar>
 

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 import type { TMermaidRendererProps } from './type';
 
-const MermaidDiagram: React.FC<TMermaidRendererProps> = ({
+const MermaidDiagram: React.FC<Readonly<TMermaidRendererProps>> = ({
   chart,
   config = {
     startOnLoad: false,

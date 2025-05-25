@@ -1,6 +1,11 @@
 'use client';
-import React from 'react';
 
-export default function VoiceRecorder() {
-  return <div>VoiceRecorder</div>;
+import { VoiceRecorder } from '@/features';
+
+export default function VoiceRecorderPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <VoiceRecorder />
+    </div>
+  );
 }
