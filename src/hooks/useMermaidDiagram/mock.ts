@@ -1,5 +1,5 @@
 const simulateDelay = () =>
-  new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 200));
+  new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 200));
 
 export const fetchFlowcharts = async () => {
   await simulateDelay();

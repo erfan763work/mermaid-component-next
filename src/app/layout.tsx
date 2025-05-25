@@ -1,12 +1,18 @@
 import { ReactNode } from 'react';
 import { AppProvider } from '@/app/provider';
 import '../styles/globals.css';
+import AppLayout from './_components/appLayout';
+import { MermaidInitializer } from '@/components/common';
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <MermaidInitializer>
+            <AppLayout>{children}</AppLayout>
+          </MermaidInitializer>
+        </AppProvider>
       </body>
     </html>
   );

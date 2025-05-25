@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 import type { TMermaidRendererProps } from './type';
@@ -14,13 +16,21 @@ const MermaidDiagram: React.FC<TMermaidRendererProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>('');
+  const initializedRef = useRef(false);
+  const prevChartRef = useRef<string>('');
 
   useEffect(() => {
-    mermaid.initialize(config);
+    if (!initializedRef.current) {
+      mermaid.initialize(config);
+      initializedRef.current = true;
+    }
+  }, [config]);
+
+  useEffect(() => {
+    if (!chart || !ref.current || chart === prevChartRef.current) return;
+    prevChartRef.current = chart;
 
     const renderDiagram = async () => {
-      if (!chart || !ref.current) return;
-
       try {
         const id = `mermaid-${Math.floor(Math.random() * 10000)}`;
         const { svg } = await mermaid.render(id, chart);
@@ -33,7 +43,7 @@ const MermaidDiagram: React.FC<TMermaidRendererProps> = ({
     };
 
     renderDiagram();
-  }, [chart, config, onError]);
+  }, [chart, onError]);
 
   return (
     <div
