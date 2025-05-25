@@ -33,3 +33,4 @@ package-lock.json
 tsconfig.tsbuildinfo
 .next
 *.next*
+.next/*
