@@ -14,24 +14,24 @@ const VoiceRecorderPlayer = ({
   if (!mediaBlobUrl) return null;
 
   return (
-    <div className="mt-4 space-y-3">
+    <div className="mt-4 w-full space-y-3">
       {error && <div className="mb-2 text-sm text-red-500">{error}</div>}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button
           variant="outline"
           size="sm"
           onClick={onPlayPause}
-          className="gap-2"
+          className="flex-1 gap-2 sm:flex-none"
         >
           {audioRef.current?.paused ? (
             <>
               <Play className="h-4 w-4" />
-              Play
+              <span className="sr-only sm:not-sr-only">Play</span>
             </>
           ) : (
             <>
               <Pause className="h-4 w-4" />
-              Pause
+              <span className="sr-only sm:not-sr-only">Pause</span>
             </>
           )}
         </Button>
@@ -39,14 +39,19 @@ const VoiceRecorderPlayer = ({
           variant="outline"
           size="sm"
           onClick={onDownload}
-          className="gap-2"
+          className="flex-1 gap-2 sm:flex-none"
         >
           <Download className="h-4 w-4" />
-          Download
+          <span className="sr-only sm:not-sr-only">Download</span>
         </Button>
-        <Button variant="outline" size="sm" onClick={onClear} className="gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onClear}
+          className="flex-1 gap-2 sm:flex-none"
+        >
           <Trash2 className="h-4 w-4" />
-          Clear
+          <span className="sr-only sm:not-sr-only">Clear</span>
         </Button>
       </div>
       <audio
@@ -59,4 +64,5 @@ const VoiceRecorderPlayer = ({
     </div>
   );
 };
+
 export default VoiceRecorderPlayer;

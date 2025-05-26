@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { toast } from 'sonner';
 
 export const useVoiceRecorder = () => {
   const [status, setStatus] = useState<
@@ -22,12 +23,7 @@ export const useVoiceRecorder = () => {
     message: string,
     type: 'success' | 'error' | 'info' = 'info',
   ) => {
-    // Simple toast implementation
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    toast[type](message);
   };
 
   const checkMicrophonePermissions = async () => {
@@ -48,6 +44,7 @@ export const useVoiceRecorder = () => {
   };
 
   const startRecording = async () => {
+    clearRecording();
     try {
       setStatus('acquiring_media');
       const hasPermission = await checkMicrophonePermissions();
