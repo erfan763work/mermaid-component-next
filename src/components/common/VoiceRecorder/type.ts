@@ -20,6 +20,7 @@ export type TVoiceRecorderControlsProps = {
 export type TVoiceRecorderPlayerProps = {
   mediaBlobUrl: string | null;
   audioRef: React.RefObject<HTMLAudioElement | null>;
+  error: string | null;
   onPlayPause: () => void;
   onDownload: () => void;
   onClear: () => void;

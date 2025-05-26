@@ -10,6 +10,9 @@ export const useVoiceRecorder = () => {
   const [error, setError] = React.useState<string | null>(null);
   const timerRef = React.useRef<NodeJS.Timeout | null>(null);
   const audioRef = React.useRef<HTMLAudioElement>(null);
+  const isSafari =
+    typeof window !== 'undefined' &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const {
     status,
@@ -29,6 +32,8 @@ export const useVoiceRecorder = () => {
       setIsPaused(false);
       toast.success('Recording saved successfully');
     },
+    // Safari needs specific mimeType
+    mediaRecorderOptions: isSafari ? { mimeType: 'audio/mp4' } : undefined,
   });
 
   React.useEffect(() => {
@@ -51,10 +56,14 @@ export const useVoiceRecorder = () => {
 
   const checkMicrophonePermissions = async () => {
     try {
+      // Safari requires direct access to microphone without checking first
+      if (isSafari) return true;
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(track => track.stop());
       return true;
-    } catch {
+    } catch (err) {
+      console.error('Microphone permission error:', err);
       setError('Microphone access denied or not available');
       toast.error('Microphone access denied. Please check your permissions.');
       return false;
@@ -70,57 +79,90 @@ export const useVoiceRecorder = () => {
     try {
       setRecordingTime(0);
       setIsPaused(false);
-      startRecording();
+      await startRecording();
       toast.info('Recording started');
-    } catch {
+    } catch (err) {
+      console.error('Recording start error:', err);
       setError('Failed to start recording');
       toast.error('Failed to start recording. Please try again.');
     }
   };
 
   const handleStop = () => {
-    stopRecording();
-    toast.info('Recording stopped');
+    try {
+      stopRecording();
+      toast.info('Recording stopped');
+    } catch (err) {
+      console.error('Recording stop error:', err);
+      setError('Failed to stop recording');
+      toast.error('Failed to stop recording. Please try again.');
+    }
   };
 
   const handlePauseResume = () => {
-    if (isPaused) {
-      resumeRecording();
-      toast.info('Recording resumed');
-    } else {
-      pauseRecording();
-      toast.info('Recording paused');
+    try {
+      if (isPaused) {
+        resumeRecording();
+        toast.info('Recording resumed');
+      } else {
+        pauseRecording();
+        toast.info('Recording paused');
+      }
+      setIsPaused(!isPaused);
+    } catch (err) {
+      console.error('Pause/resume error:', err);
+      setError('Failed to pause/resume recording');
+      toast.error('Failed to pause/resume recording. Please try again.');
     }
-    setIsPaused(!isPaused);
   };
 
   const handleClear = () => {
-    clearBlobUrl();
-    setError(null);
-    toast.info('Recording cleared');
+    try {
+      clearBlobUrl();
+      setError(null);
+      toast.info('Recording cleared');
+    } catch (err) {
+      console.error('Clear error:', err);
+      setError('Failed to clear recording');
+      toast.error('Failed to clear recording. Please try again.');
+    }
   };
 
   const handleDownload = () => {
     if (!mediaBlobUrl) return;
 
-    const a = document.createElement('a');
-    a.href = mediaBlobUrl;
-    a.download = `recording-${new Date().toISOString()}.wav`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    toast.success('Recording downloaded');
+    try {
+      const a = document.createElement('a');
+      a.href = mediaBlobUrl;
+      // Use appropriate extension based on browser
+      const extension = isSafari ? 'mp4' : 'wav';
+      a.download = `recording-${new Date().toISOString()}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast.success('Recording downloaded');
+    } catch (err) {
+      console.error('Download error:', err);
+      setError('Failed to download recording');
+      toast.error('Failed to download recording. Please try again.');
+    }
   };
 
   const handlePlayPause = () => {
-    if (audioRef.current) {
+    if (!audioRef.current) return;
+
+    try {
       if (audioRef.current.paused) {
-        audioRef.current.play().catch(() => {
+        audioRef.current.play().catch(err => {
+          console.error('Play error:', err);
           toast.error('Failed to play audio');
         });
       } else {
         audioRef.current.pause();
       }
+    } catch (err) {
+      console.error('Play/pause error:', err);
+      toast.error('Failed to play/pause audio');
     }
   };
 

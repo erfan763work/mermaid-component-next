@@ -43,6 +43,7 @@ export default function VoiceRecorder() {
       <VoiceRecorderPlayer
         mediaBlobUrl={mediaBlobUrl ?? null}
         audioRef={audioRef}
+        error={error}
         onPlayPause={handlePlayPause}
         onDownload={handleDownload}
         onClear={handleClear}

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Play, Pause, Download, Trash2 } from 'lucide-react';
 import type { TVoiceRecorderPlayerProps } from './type';
+import { toast } from 'sonner';
 
 const VoiceRecorderPlayer = ({
   mediaBlobUrl,
@@ -8,10 +9,13 @@ const VoiceRecorderPlayer = ({
   onPlayPause,
   onDownload,
   onClear,
+  error,
 }: Readonly<TVoiceRecorderPlayerProps>) => {
   if (!mediaBlobUrl) return null;
+
   return (
     <div className="mt-4 space-y-3">
+      {error && <div className="mb-2 text-sm text-red-500">{error}</div>}
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
@@ -45,9 +49,14 @@ const VoiceRecorderPlayer = ({
           Clear
         </Button>
       </div>
-      <audio ref={audioRef} src={mediaBlobUrl} controls className="w-full" />
+      <audio
+        ref={audioRef}
+        src={mediaBlobUrl}
+        controls
+        className="w-full"
+        onError={() => toast.error('Error playing audio')}
+      />
     </div>
   );
 };
-
 export default VoiceRecorderPlayer;
