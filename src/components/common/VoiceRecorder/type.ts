@@ -11,10 +11,10 @@ export type TVoiceRecorderUIProps = {
 export type TVoiceRecorderControlsProps = {
   status: string;
   isPaused: boolean;
+  isAcquiringMedia: boolean;
   onStart: () => void;
   onStop: () => void;
   onPauseResume: () => void;
-  isAcquiringMedia: boolean;
 };
 
 export type TVoiceRecorderPlayerProps = {
