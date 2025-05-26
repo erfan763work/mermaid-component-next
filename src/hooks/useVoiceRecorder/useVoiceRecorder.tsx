@@ -24,6 +24,7 @@ export const useVoiceRecorder = () => {
     clearBlobUrl,
   } = useReactMediaRecorder({
     audio: true,
+    askPermissionOnMount: true,
     onStop: () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -33,6 +34,9 @@ export const useVoiceRecorder = () => {
       toast.success('Recording saved successfully');
     },
     // Safari needs specific mimeType
+    blobPropertyBag: {
+      type: isSafari ? 'audio/mp4' : 'audio/wav',
+    },
     mediaRecorderOptions: isSafari ? { mimeType: 'audio/mp4' } : undefined,
   });
 

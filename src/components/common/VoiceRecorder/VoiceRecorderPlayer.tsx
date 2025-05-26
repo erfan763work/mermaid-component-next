@@ -2,15 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Play, Pause, Download, Trash2 } from 'lucide-react';
 import type { TVoiceRecorderPlayerProps } from './type';
 import { toast } from 'sonner';
+import Waveform from './Waveform';
+import { useAudioVisualizer } from '@/hooks';
 
 const VoiceRecorderPlayer = ({
-  mediaBlobUrl,
+  error,
   audioRef,
+  mediaBlobUrl,
   onPlayPause,
   onDownload,
   onClear,
-  error,
 }: Readonly<TVoiceRecorderPlayerProps>) => {
+  const { waveformData } = useAudioVisualizer(audioRef);
+
   if (!mediaBlobUrl) return null;
 
   return (
@@ -49,6 +53,7 @@ const VoiceRecorderPlayer = ({
           Clear
         </Button>
       </div>
+      <Waveform waveformData={waveformData} />
       <audio
         ref={audioRef}
         src={mediaBlobUrl}
